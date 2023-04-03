@@ -6,30 +6,36 @@ import { createFiltersTemplate } from './view/filters.js';
 import { createNewPointFormTemplate } from './view/add-new-point.js';
 import { createEditPointTemplate } from './view/edit-point.js';
 import { createTripCostTemplate } from './view/trip-cost.js';
+import { generatePoint } from './mock/point.js';
+import { generateFilter } from './mock/filter.js';
 
-const POINT_COUNT = 3;
+const POINT_COUNT = 16;
 const DEFAULT_POSITION = 'beforeend';
+
+const points = new Array(POINT_COUNT).fill().map(generatePoint);
+const filters = generateFilter(points);
 
 const render = (container, template, place = DEFAULT_POSITION) => {
   container.insertAdjacentHTML(place, template);
 };
+
 const header = document.querySelector('.trip-main');
-render(header, createTripInfoTemplate(), 'afterbegin');
+render(header, createTripInfoTemplate(points), 'afterbegin');
 
 const tripInfo = header.querySelector('.trip-info');
-render(tripInfo, createTripCostTemplate());
+render(tripInfo, createTripCostTemplate(points));
 
 const controls = document.querySelector('.trip-controls');
 render(controls, createNavigationTemplate());
-render(controls, createFiltersTemplate());
+render(controls, createFiltersTemplate(filters));
 
 const mainBoard = document.querySelector('.trip-events');
 render(mainBoard, createBoardTemplate());
 
 const tripEventsList = mainBoard.querySelector('.trip-events__list');
-render(tripEventsList, createEditPointTemplate());
+render(tripEventsList, createEditPointTemplate(points[0]));
 render(tripEventsList, createNewPointFormTemplate());
 
-for (let i = 0; i < POINT_COUNT; i++) {
-  render(tripEventsList, createPointTemplate());
+for (let i = 1; i < POINT_COUNT; i++) {
+  render(tripEventsList, createPointTemplate(points[i]));
 }
