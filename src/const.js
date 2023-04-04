@@ -22,10 +22,18 @@ export const DATE_FORMAT = {
 };
 
 export const OFFERS = [
-  'Add luggage',
-  'Switch to comfort',
-  'Book tickets',
-  'Add breakfast',
-  'Lunch in city',
-  'Rent a car',
+  { id: 0, name: 'Add luggage' },
+  { id: 1, name: 'Switch to comfort' },
+  { id: 2, name: 'Book tickets' },
+  { id: 3, name: 'Add breakfast' },
+  { id: 4, name: 'Lunch in city' },
+  { id: 5, name: 'Rent a car' },
+];
+
+export const SORTING = [
+  { type: 'day', name: 'Day' },
+  { type: 'event', name: 'Event' },
+  { type: 'time', name: 'Time' },
+  { type: 'price', name: 'Price' },
+  { type: 'offer', name: 'Offers' },
 ];

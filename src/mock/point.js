@@ -1,8 +1,7 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { DATE_FORMAT, DESTINATIONS, POINT_TYPES } from '../const.js';
+import { DESTINATIONS, POINT_TYPES, OFFERS } from '../const.js';
 import { getRandomInteger } from '../utils.js';
-import { generateOffers } from './offers.js';
 
 dayjs.extend(duration);
 
@@ -72,6 +71,7 @@ const generateDate = () => {
     const startTripDate = dayjs(startedDay).add(dateFromGap, 'm').toDate();
     const endTripDate = dayjs(startTripDate).add(dateToGap, 'm').toDate();
     startedDay = endTripDate;
+
     return {
       startTripDate,
       endTripDate,
@@ -104,7 +104,7 @@ const generateDifference = (dateTo, dateFrom) => {
 const getData = generateDate();
 
 export const generatePoint = () => {
-  const offers = new Array(getRandomInteger(0, 3)).fill().map(generateOffers);
+  const offers = new Array(getRandomInteger(0, 5)).fill().map(() => OFFERS[getRandomInteger(0, OFFERS.length - 1)].id);
   const dateInterval = getData();
 
   return {
