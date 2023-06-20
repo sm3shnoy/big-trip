@@ -36,7 +36,7 @@ const generateDescription = () => {
 const generateDescriptionPhoto = () =>
   new Array(getRandomInteger(1, MAX_PHOTOS_COUNT))
     .fill()
-    .map(() => `http://picsum.photos/248/152?r=${getRandomInteger(1, 99)}`);
+    .map(() => `https://loremflickr.com/320/240?random=${getRandomInteger(1, 99)}`);
 
 const generateTypePoint = () => {
   const randomIndex = getRandomInteger(0, POINT_TYPES.length - 1);

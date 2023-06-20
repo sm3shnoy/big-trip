@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { createElement } from '../utils';
 import { generateTemplateEditPointOffers } from '../mock/offers.js';
 import { POINT_TYPES, DESTINATIONS, DATE_FORMAT } from '../const.js';
 
@@ -28,7 +29,7 @@ const createPhotoList = (photos) => {
   </div>`;
 };
 
-export const createEditPointTemplate = (point = {}) => {
+const createEditPointTemplate = (point = {}) => {
   const {
     type = '',
     destination = '',
@@ -118,3 +119,26 @@ export const createEditPointTemplate = (point = {}) => {
     </form>
   </li>`;
 };
+
+export class EditPoint {
+  constructor(point) {
+    this._element = null;
+    this._point = point;
+  }
+
+  getTemplate() {
+    return createEditPointTemplate(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
