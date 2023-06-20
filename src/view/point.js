@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { generateTemplateOffers } from '../mock/offers.js';
 import { DATE_FORMAT } from '../const.js';
+import { createElement } from '../utils.js';
 
 export const createPointTemplate = (point) => {
   const { type, destination, offers, price, duration, dateFrom, dateTo, isFavorite } = point;
@@ -9,6 +10,9 @@ export const createPointTemplate = (point) => {
   const formatToDateIso = dayjs(dateTo).format(DATE_FORMAT.ISO);
   const formatToStartTime = dayjs(dateFrom).format(DATE_FORMAT.HOUR_MINUTE);
   const formatToEndTime = dayjs(dateTo).format(DATE_FORMAT.HOUR_MINUTE);
+
+  // const toggleFormButton = getElement('event__rollup-btn');
+  // console.log(toggleFormButton);
 
   return `<li class="trip-events__item">
     <div class="event">
@@ -44,3 +48,26 @@ export const createPointTemplate = (point) => {
     </div>
   </li>`;
 };
+
+export class Point {
+  constructor(point) {
+    this._element = null;
+    this._point = point;
+  }
+
+  getTempalate() {
+    return createPointTemplate(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTempalate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
