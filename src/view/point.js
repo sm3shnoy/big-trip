@@ -11,9 +11,6 @@ export const createPointTemplate = (point) => {
   const formatToStartTime = dayjs(dateFrom).format(DATE_FORMAT.HOUR_MINUTE);
   const formatToEndTime = dayjs(dateTo).format(DATE_FORMAT.HOUR_MINUTE);
 
-  // const toggleFormButton = getElement('event__rollup-btn');
-  // console.log(toggleFormButton);
-
   return `<li class="trip-events__item">
     <div class="event">
       <time class="event__date" datetime="${formatFromDateIso}">${formatFromDateDayMonth}</time>
@@ -49,7 +46,7 @@ export const createPointTemplate = (point) => {
   </li>`;
 };
 
-export class Point {
+export default class PointView {
   constructor(point) {
     this._element = null;
     this._point = point;

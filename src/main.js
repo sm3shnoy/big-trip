@@ -1,46 +1,51 @@
 import Sorting from './view/sort.js';
-import TripInfo from './view/trip-info.js';
-import { Point } from './view/point.js';
-import { Navigation } from './view/navigation.js';
-import Filters from './view/filters.js';
-import { EditPoint } from './view/edit-point.js';
-import TripCost from './view/trip-cost.js';
+import TripInfoView from './view/trip-info.js';
+import MainMenuView from './view/main-menu.js';
+import FiltersView from './view/filters.js';
+import TripCostView from './view/trip-cost.js';
+import BoardView from './view/board.js';
+import EmptyListView from './view/empty-list.js';
+import EditPointView from './view/edit-point.js';
+import PointView from './view/point.js';
 import { generatePoint } from './mock/point.js';
 import { generateFilter } from './mock/filter.js';
 import { SORTING } from './const.js';
-import { renderElement, RenderPosition, renderTemplate } from './utils.js';
-import Board from './view/board.js';
+import { renderElement, RenderPosition, isEscEvent } from './utils.js';
 
 const POINT_COUNT = 16;
+
+const siteBodyElement = document.querySelector('.page-body');
+const menuElement = siteBodyElement.querySelector('.trip-controls__navigation');
+const filterElement = siteBodyElement.querySelector('.trip-controls__filters');
+const tripDetailsElement = siteBodyElement.querySelector('.trip-main');
+const tripBoardElement = siteBodyElement.querySelector('.trip-events');
 
 const points = new Array(POINT_COUNT).fill().map(generatePoint);
 const filters = generateFilter(points);
 
-const header = document.querySelector('.trip-main');
-renderElement(header, new TripInfo(points).getElement(), RenderPosition.AFTERBEGIN);
-
-const tripInfo = header.querySelector('.trip-info');
-renderElement(tripInfo, new TripCost(points).getElement(), RenderPosition.BEFOREEND);
-
-const controls = document.querySelector('.trip-controls');
-renderElement(controls, new Navigation().getElement(), RenderPosition.BEFOREEND);
-renderElement(controls, new Filters(filters).getElement(), RenderPosition.BEFOREEND);
-
-const mainBoard = document.querySelector('.trip-events');
-renderElement(mainBoard, new Sorting(SORTING).getElement(), RenderPosition.BEFOREEND);
-const board = new Board();
-renderElement(mainBoard, board.getElement(), RenderPosition.BEFOREEND);
+renderElement(menuElement, new MainMenuView().getElement(), RenderPosition.BEFOREEND);
+renderElement(filterElement, new FiltersView(filters).getElement(), RenderPosition.BEFOREEND);
 
 const renderPoint = (pointListElement, pointData) => {
-  const pointComponent = new Point(pointData);
-  const editPointComponent = new EditPoint(pointData);
+  const pointComponent = new PointView(pointData);
+  const editPointComponent = new EditPointView(pointData);
+
+  const onEditFormEscKeyDown = (evt) => {
+    if (isEscEvent(evt)) {
+      evt.preventDefault();
+      changeViewToPoint();
+    }
+  };
 
   const changeViewToPoint = () => {
     pointListElement.replaceChild(pointComponent.getElement(), editPointComponent.getElement());
+
+    window.removeEventListener('keydown', onEditFormEscKeyDown);
   };
 
   const changeViewToEdit = () => {
     pointListElement.replaceChild(editPointComponent.getElement(), pointComponent.getElement());
+    window.addEventListener('keydown', onEditFormEscKeyDown);
   };
 
   editPointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', changeViewToPoint);
@@ -57,6 +62,22 @@ const renderPoint = (pointListElement, pointData) => {
   renderElement(pointListElement, pointComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-for (let i = 1; i < POINT_COUNT; i++) {
-  renderPoint(board.getElement(), points[i]);
-}
+const renderBoard = (pointsData) => {
+  if (POINT_COUNT < 1) {
+    renderElement(tripBoardElement, new EmptyListView().getElement(), RenderPosition.BEFOREEND);
+    return;
+  }
+
+  const tripInfoComponent = new TripInfoView(points);
+  renderElement(tripDetailsElement, tripInfoComponent.getElement(), RenderPosition.AFTERBEGIN);
+  renderElement(tripInfoComponent.getElement, new TripCostView(pointsData).getElement(), RenderPosition.BEFOREENDBEGIN);
+  renderElement(tripBoardElement, new Sorting(SORTING).getElement(), RenderPosition.BEFOREEND);
+  const board = new BoardView();
+  renderElement(tripBoardElement, board.getElement(), RenderPosition.BEFOREEND);
+
+  for (let i = 1; i < POINT_COUNT; i++) {
+    renderPoint(board.getElement(), pointsData[i]);
+  }
+};
+
+renderBoard(points);

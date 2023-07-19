@@ -1,15 +1,18 @@
 import { createElement } from '../utils';
 
-const createNavigationTemplate = () =>
-  `<div class="trip-controls__navigation">
+const createNavigationTemplate = () => {
+  return `
+  <div>
     <h2 class="visually-hidden">Switch trip view</h2>
     <nav class="trip-controls__trip-tabs  trip-tabs">
       <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
       <a class="trip-tabs__btn" href="#">Stats</a>
     </nav>
-  </div>`;
+  </div>
+`;
+};
 
-export class Navigation {
+export default class MainMenuView {
   constructor() {
     this._element = null;
   }

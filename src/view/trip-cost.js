@@ -13,7 +13,7 @@ const createTripCostTemplate = (points) =>
     Total: &euro;&nbsp;<span class="trip-info__cost-value">${getTotalPrice(points)}</span>
   </p>`;
 
-export default class TripCost {
+export default class TripCostView {
   constructor(points) {
     this._points = points;
     this._element = null;

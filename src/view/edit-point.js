@@ -120,7 +120,7 @@ const createEditPointTemplate = (point = {}) => {
   </li>`;
 };
 
-export class EditPoint {
+export default class EditPointView {
   constructor(point) {
     this._element = null;
     this._point = point;

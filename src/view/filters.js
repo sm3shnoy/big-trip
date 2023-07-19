@@ -16,16 +16,15 @@ const createFilterItemTemplate = (filters, isChecked) => {
 const createFiltersTemplate = (filters) => {
   const filterItemsTemplate = filters.map((filter, index) => createFilterItemTemplate(filter, index === 0)).join('');
 
-  return `<div class="trip-controls__filters">
-    <h2 class="visually-hidden">Filter events</h2>
+  return `
     <form class="trip-filters" action="#" method="get">
       ${filterItemsTemplate}
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>
-  </div>`;
+`;
 };
 
-export default class Filters {
+export default class FiltersView {
   constructor(filters) {
     this._element = null;
     this._filters = filters;

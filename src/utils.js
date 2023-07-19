@@ -5,6 +5,11 @@ export const RenderPosition = {
   BEFOREEND: 'beforeend',
 };
 
+const Keys = {
+  ESC: 'Esc',
+  ESCAPE: 'Escape',
+};
+
 export const createElement = (template) => {
   const newElement = document.createElement('div');
   newElement.innerHTML = template;
@@ -36,3 +41,5 @@ export const getRandomInteger = (a = 0, b = 1) => {
 export const isDateExpired = (date) => dayjs().isAfter(date);
 
 export const isDateComing = (date) => dayjs().isBefore(date);
+
+export const isEscEvent = (evt) => evt.code === Keys.ESC || evt.code === Keys.ESCAPE;
