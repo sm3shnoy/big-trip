@@ -32,7 +32,7 @@ const createTripInfoTemplate = (points) => {
   </section>`;
 };
 
-export default class TripInfo {
+export default class TripInfoView {
   constructor(points) {
     this._points = points;
     this._element = null;

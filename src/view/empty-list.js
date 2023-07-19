@@ -1,14 +1,14 @@
 import { createElement } from '../utils';
 
-const createBoardTemplate = () => `<ul class="trip-events__list"></ul>`;
+const createEmptyList = () => `<p class="trip-events__msg">Click New Event to create your first point</p>`;
 
-export default class BoardView {
+export default class EmptyListView {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createBoardTemplate();
+    return createEmptyList();
   }
 
   getElement() {
