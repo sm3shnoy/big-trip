@@ -1,5 +1,5 @@
 import { OFFERS } from '../const.js';
-import { getRandomInteger } from '../utils.js';
+import { getRandomInteger } from '../utils/common.js';
 
 const getUniqueOffers = (offers) => {
   const uniqueOffersList = new Set(offers.map((item) => item));

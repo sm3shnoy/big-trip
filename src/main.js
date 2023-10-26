@@ -10,7 +10,8 @@ import PointView from './view/point.js';
 import { generatePoint } from './mock/point.js';
 import { generateFilter } from './mock/filter.js';
 import { SORTING } from './const.js';
-import { renderElement, RenderPosition, isEscEvent } from './utils.js';
+import { render, RenderPosition, replace } from './utils/render.js';
+import { isEscEvent } from './utils/common.js';
 
 const POINT_COUNT = 16;
 
@@ -22,9 +23,8 @@ const tripBoardElement = siteBodyElement.querySelector('.trip-events');
 
 const points = new Array(POINT_COUNT).fill().map(generatePoint);
 const filters = generateFilter(points);
-
-renderElement(menuElement, new MainMenuView().getElement(), RenderPosition.BEFOREEND);
-renderElement(filterElement, new FiltersView(filters).getElement(), RenderPosition.BEFOREEND);
+render(menuElement, new MainMenuView(), RenderPosition.BEFOREEND);
+render(filterElement, new FiltersView(filters), RenderPosition.BEFOREEND);
 
 const renderPoint = (pointListElement, pointData) => {
   const pointComponent = new PointView(pointData);
@@ -38,42 +38,38 @@ const renderPoint = (pointListElement, pointData) => {
   };
 
   const changeViewToPoint = () => {
-    pointListElement.replaceChild(pointComponent.getElement(), editPointComponent.getElement());
-
+    replace(pointComponent, editPointComponent);
     window.removeEventListener('keydown', onEditFormEscKeyDown);
   };
 
   const changeViewToEdit = () => {
-    pointListElement.replaceChild(editPointComponent.getElement(), pointComponent.getElement());
+    replace(editPointComponent, pointComponent);
     window.addEventListener('keydown', onEditFormEscKeyDown);
   };
 
-  editPointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', changeViewToPoint);
-  pointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', changeViewToEdit);
+  pointComponent.setEditClickHandler(changeViewToEdit);
+  editPointComponent.setCloseEditClickHandler(changeViewToPoint);
 
-  editPointComponent
-    .getElement()
-    .querySelector('.event--edit')
-    .addEventListener('submit', (evt) => {
-      evt.preventDefault();
-      changeViewToPoint();
-    });
+  editPointComponent.setFormSubmitHandler((evt) => {
+    evt.preventDefault();
+    changeViewToPoint();
+  });
 
-  renderElement(pointListElement, pointComponent.getElement(), RenderPosition.BEFOREEND);
+  render(pointListElement, pointComponent, RenderPosition.BEFOREEND);
 };
 
 const renderBoard = (pointsData) => {
   if (POINT_COUNT < 1) {
-    renderElement(tripBoardElement, new EmptyListView().getElement(), RenderPosition.BEFOREEND);
+    render(tripBoardElement, new EmptyListView(), RenderPosition.BEFOREEND);
     return;
   }
 
   const tripInfoComponent = new TripInfoView(points);
-  renderElement(tripDetailsElement, tripInfoComponent.getElement(), RenderPosition.AFTERBEGIN);
-  renderElement(tripInfoComponent.getElement, new TripCostView(pointsData).getElement(), RenderPosition.BEFOREENDBEGIN);
-  renderElement(tripBoardElement, new Sorting(SORTING).getElement(), RenderPosition.BEFOREEND);
+  render(tripDetailsElement, tripInfoComponent, RenderPosition.AFTERBEGIN);
+  render(tripInfoComponent, new TripCostView(pointsData), RenderPosition.BEFOREENDBEGIN);
+  render(tripBoardElement, new Sorting(SORTING), RenderPosition.BEFOREEND);
   const board = new BoardView();
-  renderElement(tripBoardElement, board.getElement(), RenderPosition.BEFOREEND);
+  render(tripBoardElement, board, RenderPosition.BEFOREEND);
 
   for (let i = 1; i < POINT_COUNT; i++) {
     renderPoint(board.getElement(), pointsData[i]);
