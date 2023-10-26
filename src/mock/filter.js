@@ -1,4 +1,4 @@
-import { isDateComing, isDateExpired } from '../utils';
+import { isDateComing, isDateExpired } from '../utils/point.js';
 
 const pointsToFilterMap = {
   everything: (points) => points.length,

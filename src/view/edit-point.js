@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
-import { createElement } from '../utils';
 import { generateTemplateEditPointOffers } from '../mock/offers.js';
 import { POINT_TYPES, DESTINATIONS, DATE_FORMAT } from '../const.js';
+import AbstractView from './abstract';
 
 const createEventType = (types, currentType = '') => {
   return types
@@ -120,25 +120,35 @@ const createEditPointTemplate = (point = {}) => {
   </li>`;
 };
 
-export default class EditPointView {
+export default class EditPointView extends AbstractView {
   constructor(point) {
-    this._element = null;
+    super();
     this._point = point;
+    this._closeEditClickHandler = this._closeEditClickHandler.bind(this);
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
   }
 
   getTemplate() {
     return createEditPointTemplate(this._point);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _closeEditClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.closeEdit();
   }
 
-  removeElement() {
-    this._element = null;
+  setCloseEditClickHandler(callback) {
+    this._callback.closeEdit = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._closeEditClickHandler);
+  }
+
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
+  }
+
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector('.event--edit').addEventListener('submit', this._setFormSubmitHandler);
   }
 }
