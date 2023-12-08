@@ -20,6 +20,8 @@ export const render = (container, child, place) => {
       break;
     case RenderPosition.BEFOREEND:
       container.append(child);
+    default:
+      throw new Error(`Unknow render position: ${place}`);
   }
 };
 

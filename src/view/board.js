@@ -1,6 +1,6 @@
 import AbstractView from './abstract';
 
-const createBoardTemplate = () => `<ul class="trip-events__list"></ul>`;
+const createBoardTemplate = () => `<section class="trip-events"><h2 class="visually-hidden">Trip events</h2></section>`;
 
 export default class BoardView extends AbstractView {
   getTemplate() {

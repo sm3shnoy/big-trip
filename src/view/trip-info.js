@@ -23,7 +23,7 @@ const getTotalDateGap = (points) => {
 };
 
 const createTripInfoTemplate = (points) => {
-  return `<section class="trip-main__trip-info  trip-info">
+  return `<section class="trip-main__trip-info trip-info">
     <div class="trip-info__main">
       <h1 class="trip-info__title">${getTotalRoute(points)}</h1>
 
