@@ -30,10 +30,18 @@ export const OFFERS = [
   { id: 5, name: 'Rent a car' },
 ];
 
+export const SortType = {
+  DAY: 'day',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFER: 'offer',
+  EVENT: 'event',
+};
+
 export const SORTING = [
-  { type: 'day', name: 'Day' },
-  { type: 'event', name: 'Event' },
-  { type: 'time', name: 'Time' },
-  { type: 'price', name: 'Price' },
-  { type: 'offer', name: 'Offers' },
+  { type: SortType.DAY, name: 'Day' },
+  { type: SortType.EVENT, name: 'Event' },
+  { type: SortType.TIME, name: 'Time' },
+  { type: SortType.PRICE, name: 'Price' },
+  { type: SortType.OFFER, name: 'Offers' },
 ];
