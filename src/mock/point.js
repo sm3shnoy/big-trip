@@ -85,6 +85,7 @@ const generateDifference = (dateTo, dateFrom) => {
   const days = Math.floor(totalMinutesInDate / 60 / 24);
   const hours = Math.floor(totalMinutesInDate / 60 - days * 24);
   const minutes = Math.floor(totalMinutesInDate - (hours * 60 + days * 24 * 60));
+
   let result = '';
 
   if (days > 0) {
