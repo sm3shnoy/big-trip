@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { DATE_FORMAT } from '../const.js';
 
 export const isDateExpired = (date) => dayjs().isAfter(date);
 
@@ -62,4 +61,12 @@ export const sortTime = (pointA, pointB) => {
   const totalMinutesInDatePointB = dayjs(pointB.dateFrom).diff(pointB.dateTo, 'm');
 
   return totalMinutesInDatePointB - totalMinutesInDatePointA;
+};
+
+export const pickElementDependOnValue = (value, elements, descriptionFlag) => {
+  if (descriptionFlag) {
+    return elements.find((element) => element.name === value);
+  }
+
+  return elements.find((element) => element.type === value).offers;
 };

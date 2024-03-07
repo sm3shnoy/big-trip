@@ -1,8 +1,10 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { DESTINATIONS, POINT_TYPES, OFFERS } from '../const.js';
-import { getRandomInteger } from '../utils/common.js';
+import { DESTINATIONS, POINT_TYPES } from '../const.js';
+import { getRandomArrayElement, getRandomInteger } from '../utils/common.js';
 import { nanoid } from 'nanoid';
+import { generateRandomOffers } from './offers.js';
+import { pickElementDependOnValue } from '../utils/point.js';
 
 dayjs.extend(duration);
 
@@ -31,7 +33,7 @@ const generateDescription = () => {
     .fill()
     .map(() => DESCRIPTIONS[getRandomInteger(0, MAX_DESCRIPTION_COUNT)]);
 
-  return String(result);
+  return result.join(' ');
 };
 
 const generateDescriptionPhoto = () =>
@@ -45,10 +47,12 @@ const generateTypePoint = () => {
   return POINT_TYPES[randomIndex];
 };
 
-const generateDestination = () => {
-  const randomIndex = getRandomInteger(0, DESTINATIONS.length - 1);
-
-  return DESTINATIONS[randomIndex];
+const generateDestination = (city) => {
+  return {
+    name: city,
+    description: generateDescription(),
+    photos: generateDescriptionPhoto(),
+  };
 };
 
 const generatePrice = () => getRandomInteger(PRICES.min, PRICES.max);
@@ -103,21 +107,20 @@ const generateDifference = (dateTo, dateFrom) => {
   return result;
 };
 
+export const generatedDescriptions = DESTINATIONS.map((city) => generateDestination(city));
+
 const getData = generateDate();
+export const generatedOffers = generateRandomOffers(POINT_TYPES);
 
 export const generatePoint = () => {
-  const offers = new Array(getRandomInteger(0, 5)).fill().map(() => OFFERS[getRandomInteger(0, OFFERS.length - 1)].id);
   const dateInterval = getData();
+  const type = getRandomArrayElement(POINT_TYPES);
 
   return {
     id: nanoid(),
     type: generateTypePoint(),
-    destination: generateDestination(),
-    info: {
-      description: generateDescription(),
-      photos: generateDescriptionPhoto(),
-    },
-    offers: offers,
+    destination: getRandomArrayElement(generatedDescriptions),
+    offers: pickElementDependOnValue(type, generatedOffers),
     price: generatePrice(),
     dateFrom: dateInterval.startTripDate,
     dateTo: dateInterval.endTripDate,
