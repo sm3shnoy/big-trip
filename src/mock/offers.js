@@ -1,45 +1,50 @@
-import { OFFERS } from '../const.js';
-import { getRandomInteger } from '../utils/common.js';
+import { generateRandomArray } from '../utils/common.js';
 
-const getUniqueOffers = (offers) => {
-  const uniqueOffersList = new Set(offers.map((item) => item));
-  const ids = Array.from(uniqueOffersList);
+const MAX_OFFERS_NUMBER = 5;
 
-  return ids;
+const generateRandomOffer = (type) => {
+  const possibleOffers = [
+    {
+      title: 'Rent a car',
+      price: 200,
+    },
+    {
+      title: 'Add luggage',
+      price: 30,
+    },
+    {
+      title: 'Switch to comfort',
+      price: 100,
+    },
+    {
+      title: 'Order Uber',
+      price: 20,
+    },
+    {
+      title: 'Add breakfast',
+      price: 50,
+    },
+    {
+      title: 'Add meal',
+      price: 15,
+    },
+    {
+      title: 'Choose seats',
+      price: 5,
+    },
+    {
+      title: 'Travel by train',
+      price: 40,
+    },
+  ];
+  return {
+    type,
+    offers: generateRandomArray(possibleOffers, 0, MAX_OFFERS_NUMBER),
+  };
 };
 
-export const generateTemplateOffers = (offers) => {
-  const ids = getUniqueOffers(offers);
-
-  return ids
-    .map((item) => {
-      const name = OFFERS[item].name;
-
-      return `<li class="event__offer">
-  <span class="event__offer-title">${name}</span>
-  &plus;&euro;&nbsp;
-  <span class="event__offer-price">${getRandomInteger(20, 100)}</span>
-</li>
-`;
-    })
-    .join('');
+const generateRandomOffers = (types) => {
+  return types.map((type) => generateRandomOffer(type));
 };
 
-export const generateTemplateEditPointOffers = (offers) => {
-  const ids = getUniqueOffers(offers);
-
-  return ids
-    .map((item) => {
-      const name = OFFERS[item].name;
-
-      return `<div class="event__offer-selector">
-<input class="event__offer-checkbox  visually-hidden" id="event-offer-${name}-1" type="checkbox" name="event-offer-${name}" checked>
-<label class="event__offer-label" for="event-offer-luggage-1">
-  <span class="event__offer-title">${name}</span>
-  &plus;&euro;&nbsp;
-  <span class="event__offer-price">${getRandomInteger(20, 100)}</span>
-</label>
-</div>`;
-    })
-    .join('');
-};
+export { generateRandomOffers };

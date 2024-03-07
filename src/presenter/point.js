@@ -75,6 +75,7 @@ export default class Point {
   }
 
   _changeViewToPoint() {
+    this._editPointComponent.resetInput(this._point);
     replace(this._pointComponent, this._editPointComponent);
     window.removeEventListener('keydown', this._escKeyDownHandler);
     this._mode = Mode.DEFAULT;

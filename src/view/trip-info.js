@@ -3,7 +3,7 @@ import { DATE_FORMAT } from '../const.js';
 import AbstractView from './abstract.js';
 
 const getTotalRoute = (points) => {
-  const uniqueCityList = new Set(points.map((point) => point.destination));
+  const uniqueCityList = new Set(points.map((point) => point.destination.name));
   const totalRoute = Array.from(uniqueCityList).join(' &mdash; ');
 
   return totalRoute;

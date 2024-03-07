@@ -1,7 +1,21 @@
 import dayjs from 'dayjs';
-import { generateTemplateOffers } from '../mock/offers.js';
 import { DATE_FORMAT } from '../const.js';
 import AbstractView from './abstract.js';
+
+const createPointOfferTemplate = (offers) => {
+  return offers.length > 0
+    ? `${offers
+        .map(
+          ({ title, price }) => `<li
+    class="event__offer">
+    <span class="event__offer-title">${title}</span>
+    &plus;&euro;&nbsp;
+    <span class="event__offer-price">${price}</span>
+    </li>`
+        )
+        .join('')}`
+    : '';
+};
 
 export const createPointTemplate = (point) => {
   const { type, destination, offers, price, duration, dateFrom, dateTo, isFavorite } = point;
@@ -17,7 +31,7 @@ export const createPointTemplate = (point) => {
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${type} ${destination}</h3>
+      <h3 class="event__title">${type} ${destination.name}</h3>
       <div class="event__schedule">
         <p class="event__time">
           <time class="event__start-time" datetime="${formatFromDateIso}">${formatToStartTime}</time>
@@ -31,7 +45,7 @@ export const createPointTemplate = (point) => {
       </p>
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
-        ${generateTemplateOffers(offers)}
+        ${createPointOfferTemplate(offers)}
       </ul>
       <button class="event__favorite-btn ${isFavorite && 'event__favorite-btn--active'}" type="button">
         <span class="visually-hidden">Add to favorite</span>
